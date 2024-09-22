@@ -1,76 +1,110 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         
+    <!-- Maven model version definition -->
     <modelVersion>4.0.0</modelVersion>
-    <groupId>gt.com.gm</groupId>
-    <artifactId>ControlClientes</artifactId>
-    <version>1.0</version>
-    <packaging>war</packaging>
+    
+    <!-- Group ID, Artifact ID, and version define the unique identity of the project -->
+    <groupId>gt.com.gm</groupId> <!-- Company or group identifier -->
+    <artifactId>ControlClientes</artifactId> <!-- Name of the project -->
+    <version>1.0</version> <!-- Version of the project -->
+    
+    <!-- The type of packaging for the project (WAR file for web applications) -->
+    <packaging>war</packaging> 
+    
+    <!-- Project name -->
     <name>ControlClientes</name>
     
+    <!-- Project-wide properties for compiling and encoding settings -->
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <!-- Specify the version of Java to compile the code -->
+        <maven.compiler.source>1.8</maven.compiler.source> <!-- Java version to use -->
+        <maven.compiler.target>1.8</maven.compiler.target> <!-- Java version target -->
+        
+        <!-- Directory for endorsed standards (advanced Java features) -->
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
+        
+        <!-- Encoding for the source files -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        
+        <!-- Disable failing if there's no web.xml file (modern applications don't need it) -->
         <failOnMissingWebXml>false</failOnMissingWebXml>
+        
+        <!-- Jakarta EE version used in the project -->
         <jakartaee>8.0</jakartaee>
     </properties>
     
+    <!-- Project dependencies (libraries needed for the project) -->
     <dependencies>
+        <!-- Jakarta EE (formerly Java EE) API dependency -->
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <version>${jakartaee}</version>
-            <scope>provided</scope>
+            <scope>provided</scope> <!-- Provided at runtime, not packaged -->
         </dependency>
                   
+        <!-- MySQL database connector dependency -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.23</version> <!-- Use the version that matches your MySQL server version -->
+            <version>8.0.23</version> <!-- MySQL driver version -->
         </dependency>
             
+        <!-- Apache Commons DBCP2 for database connection pooling -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-dbcp2</artifactId>
-            <version>2.11.0</version>
+            <version>2.11.0</version> <!-- Connection pooling library version -->
         </dependency>
     </dependencies>
     
-    
+    <!-- Build configurations for the project -->
     <build>
         <plugins>
+            <!-- Maven compiler plugin to handle the compilation process -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.1</version> <!-- Plugin version -->
                 <configuration>
+                    <!-- Source and target Java version for compiling -->
                     <source>1.8</source>
                     <target>1.8</target>
+                    
+                    <!-- Specify the endorsed directory -->
                     <compilerArguments>
                         <endorseddirs>${endorsed.dir}</endorseddirs>
                     </compilerArguments>
                 </configuration>
             </plugin>
+            
+            <!-- Maven WAR plugin to package the project into a WAR file -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.3.1</version>
+                <version>3.3.1</version> <!-- Plugin version -->
                 <configuration>
+                    <!-- Ignore missing web.xml since it's not required for newer projects -->
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
+            
+            <!-- Maven dependency plugin to copy external dependencies into a directory -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.6</version>
+                <version>2.6</version> <!-- Plugin version -->
                 <executions>
                     <execution>
+                        <!-- This execution happens in the 'validate' phase of the build -->
                         <phase>validate</phase>
                         <goals>
+                            <!-- The 'copy' goal copies dependencies -->
                             <goal>copy</goal>
                         </goals>
                         <configuration>
+                            <!-- Copy the dependency to the endorsed directory -->
                             <outputDirectory>${endorsed.dir}</outputDirectory>
                             <silent>true</silent>
                             <artifactItems>
